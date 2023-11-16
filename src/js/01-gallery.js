@@ -7,7 +7,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const galleryList = document.querySelector('.gallery');
 
 galleryList.insertAdjacentHTML('beforeend', getClick(galleryItems));
-galleryList.addEventListener('click', getImages);
 
 function getClick(galleryItems) {
   return galleryItems
@@ -19,28 +18,17 @@ function getClick(galleryItems) {
     <img
       class="gallery__image"
       src="${preview}"
-      data-source="${original}"
       alt="${description}"
-     /></a>
+      /></a>
 </li>
  `
     )
     .join('');
 }
-console.log('Nata');
-function getImages(event) {
-  event.preventDefault();
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionsPosition: 'bottom',
+  captionDelay: 250,
+});
 
-  if (event.target === event.currentTarget) {
-    return;
-  } else {
-    const instance = SimpleLightbox.create(
-      `
-        <img src="${event.target.dataset.source}" width="250px" height="250px">
-    `
-    );
-    instance.show();
-  }
-}
-
-console.log(galleryItems);
+console.log(galleryList);
