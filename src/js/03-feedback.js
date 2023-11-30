@@ -1,37 +1,38 @@
 import throttle from 'lodash.throttle';
 
-const getForm = document.querySelector('.feedback-form');
-const getInput = document.querySelector('input');
-const getMessage = document.querySelector('textarea');
+const form = document.querySelector('.feedback-form');
+const localStorageKey = 'feedback-form-state';
 
-getForm.addEventListener(
-  'click',
-  getEmail,
-  throttle(() => {}),
-  500
-);
-
-function getEmail(event) {
-  const getUserEmail = {
-    email: getForm.email.value,
-    message: getForm.message.value,
-  };
-
-  localStorage.setItem('feedback-form-state', JSON.stringify(getUserEmail));
-
-  const getKeyLocal = localStorage.getItem('feedback-form-state');
-  const getElementLocalKey = JSON.parse(getKeyLocal);
-  console.log(typeof getKeyLocal);
-
-  if (getKeyLocal !== '') {
-    return (
-      (getInput.textContent = getElementLocalKey.email) &&
-      (getMessage.textContent = getElementLocalKey.message)
-    );
-  } else {
-    (getInput.textContent = '') && (getMessage.textContent = '');
+function chekInputValue(key) {
+  // перевірка чи заповненні поля email та message
+  const savedData = localStorage.getItem(key);
+  const parsedData = JSON.parse(savedData);
+  if (parsedData === null) {
+    return;
   }
-
-  //   console.log(getElementLocalKey);
+  form[0].value = parsedData.email;
+  form[1].value = parsedData.message;
 }
-getForm.reset();
+chekInputValue(localStorageKey);
+
+form.addEventListener('input', throttle(onInputListener, 500));
+function onInputListener(evt) {
+  // створення та запис данних до локального сховища
+
+  const enteredData = {
+    email: form.email.value,
+    message: form.message.value,
+  };
+  localStorage.setItem(localStorageKey, JSON.stringify(enteredData));
+  const savedSettings = localStorage.getItem(localStorageKey);
+  const parsedSettings = JSON.parse(savedSettings);
+  console.log(parsedSettings);
+}
+
+form.addEventListener('submit', onSubmitListener);
+function onSubmitListener(evt) {
+  //очистка сховища та даних в полях
+  evt.preventDefault();
+  localStorage.removeItem(localStorageKey);
+  form.reset();
+}
