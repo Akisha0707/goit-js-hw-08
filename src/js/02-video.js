@@ -11,7 +11,8 @@ function getTimePlay(data) {
 
 player.on('timeupdate', throttle(getTimePlay, 1000));
 
-const getTime = localStorage.getItem(localKey);
+const getTime = JSON.parse(localStorage.getItem(localKey)) || 0;
+
 player.setCurrentTime(getTime);
 
 console.log('played the video!');

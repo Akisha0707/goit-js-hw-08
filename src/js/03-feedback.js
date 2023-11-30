@@ -4,7 +4,7 @@ const form = document.querySelector('.feedback-form');
 const localStorageKey = 'feedback-form-state';
 
 function chekInputValue(key) {
-  // перевірка чи заповненні поля email та message
+  //перевірка на наявність даних
   const savedData = localStorage.getItem(key);
   const parsedData = JSON.parse(savedData);
   if (parsedData === null) {
@@ -15,10 +15,9 @@ function chekInputValue(key) {
 }
 chekInputValue(localStorageKey);
 
+//додаємо подію на поле ввода
 form.addEventListener('input', throttle(onInputListener, 500));
 function onInputListener(evt) {
-  // створення та запис данних до локального сховища
-
   const enteredData = {
     email: form.email.value,
     message: form.message.value,
@@ -26,12 +25,13 @@ function onInputListener(evt) {
   localStorage.setItem(localStorageKey, JSON.stringify(enteredData));
   const savedSettings = localStorage.getItem(localStorageKey);
   const parsedSettings = JSON.parse(savedSettings);
-  console.log(parsedSettings);
 }
 
+//додаємо подію на кнопку
 form.addEventListener('submit', onSubmitListener);
 function onSubmitListener(evt) {
-  //очистка сховища та даних в полях
+  const a = JSON.parse(localStorage.getItem(localStorageKey));
+  console.log(a);
   evt.preventDefault();
   localStorage.removeItem(localStorageKey);
   form.reset();

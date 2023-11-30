@@ -1,12 +1,14 @@
-// Add imports above this lineimport
 import { galleryItems } from './gallery-items';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-// Change code below this line
 
 const galleryList = document.querySelector('.gallery');
 
 galleryList.insertAdjacentHTML('beforeend', getClick(galleryItems));
+
+galleryList.style.listStyle = 'none';
+galleryList.style.display = 'flex';
+galleryList.style.gap = '20px';
 
 function getClick(galleryItems) {
   return galleryItems
@@ -25,6 +27,7 @@ function getClick(galleryItems) {
     )
     .join('');
 }
+
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionsPosition: 'bottom',
